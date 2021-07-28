@@ -9,12 +9,12 @@ namespace Employee_Payroll
     class Taxes
     {
         private readonly IEmployee Employee;
-        private const double FEDERAL_TAX = .15;
+        private const double FEDERAL_TAX_RATE = .15;
         
         //Constructor
         public Taxes(IEmployee employee) => Employee = employee;
 
-        public double GetFederalTax(double grossPay) => grossPay * .15;
+        public double GetFederalTax(double grossPay) => grossPay * FEDERAL_TAX_RATE;
         public double GetStateTax(double grossPay) => grossPay * StateTaxRate();
 
 
