@@ -17,7 +17,7 @@ namespace Employee_Payroll.Models
         NM,
         TX
     }
-    interface IEmployee
+    class Employee
     {
         public string Id { get; set; }
         public EmployeeName Name { get; set; }

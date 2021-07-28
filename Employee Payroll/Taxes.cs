@@ -8,11 +8,14 @@ namespace Employee_Payroll
     
     class Taxes
     {
-        private readonly IEmployee Employee;
+
         private const double FEDERAL_TAX_RATE = .15;
-        
+        private readonly State Residence;
+
+
         //Constructor
-        public Taxes(IEmployee employee) => Employee = employee;
+        public Taxes(State residence) => Residence = residence;
+  
 
         public double GetFederalTax(double grossPay) => grossPay * FEDERAL_TAX_RATE;
         public double GetStateTax(double grossPay) => grossPay * StateTaxRate();
@@ -20,7 +23,7 @@ namespace Employee_Payroll
 
         private double StateTaxRate()
         {
-            switch (Employee.Residence)
+            switch (Residence)
             {
                 case State.UT:
                 case State.WY:

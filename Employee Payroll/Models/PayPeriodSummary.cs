@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Employee_Payroll.Models
 {
-    interface IPayPeriodSummary
+    class PayPeriodSummary
     {
         public string Id { get; set; }
         public EmployeeName Name { get; set; }

@@ -6,7 +6,8 @@ namespace Employee_Payroll
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var employeeFile = new ReadEmployeeFile();
+            employeeFile.EmployeeFile();
         }
     }
 }

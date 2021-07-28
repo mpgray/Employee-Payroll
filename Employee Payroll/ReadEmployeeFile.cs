@@ -6,44 +6,48 @@ using System.Text;
 
 namespace Employee_Payroll
 {
-    class ReadEmployeeFile: IEmployee
+    class ReadEmployeeFile
     {
-        public IEmployee EmployeeData { get; private set; }
 
-        public string Id { get => EmployeeData.Id; set => EmployeeData.Id = value; }
-        public EmployeeName Name { get => EmployeeData.Name; set => EmployeeData.Name = value; }
-        public EmployeePay Pay { get => EmployeeData.Pay; set => EmployeeData.Pay = value; }
-        public DateTime StartDate { get => EmployeeData.StartDate; set => EmployeeData.StartDate = value; }
-        public State Residence { get => EmployeeData.Residence; set => EmployeeData.Residence = value; }
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public PayType PayType { get; set; }
+        public double PayAmount { get; set; }
+        public DateTime StartDate { get; set; }
+        public State Residence { get; set; }
+        public int HoursWorked { get; set; }
 
-        public ReadEmployeeFile(IEmployee employee) => EmployeeData = employee;
-        public void EmployeeFile()
+
+        public List<Employee> EmployeeFile()
         {
-            using TextFieldParser parser = new TextFieldParser(@"c:\temp\test.csv");
+            var employeeList = new List<Employee>();
+
+            using TextFieldParser parser = new TextFieldParser(@"c:\proj\Employees.txt");
             parser.TextFieldType = FieldType.Delimited;
             parser.SetDelimiters(",");
             while (!parser.EndOfData)
             {
                 string[] employee = parser.ReadFields();
-                if (employee == null || employee.Length < 9)
+                if (employee == null || employee.Length < 8)
                     break;
 
                 Id = employee[0];
-                Name.FirstName = employee[1];
-                Name.LastName = employee[2];
+                FirstName = employee[1];
+                LastName = employee[2];
                 switch (employee[3])
                 {
                     case "S":
-                        Pay.Type = PayType.Salary;
+                        PayType = PayType.Salary;
                         break;
                     case "H":
-                        Pay.Type = PayType.Hourly;
+                        PayType = PayType.Hourly;
                         break;
                     default:
                         break;
                 }
 
-                Pay.Amount = Convert.ToDouble(employee[4]);
+                PayAmount = Convert.ToDouble(employee[4]);
                 StartDate = Convert.ToDateTime(employee[5]);
                 switch (employee[6])
                 {
@@ -80,8 +84,18 @@ namespace Employee_Payroll
                     default:
                         break;
                 }
-                Pay.HoursWorked = Convert.ToInt32(employee[7]);
+                HoursWorked = Convert.ToInt32(employee[7]);
+                employeeList.Add(
+                    new Employee { Id = Id, 
+                                   Name = new EmployeeName { FirstName = FirstName, LastName = LastName},
+                                   Pay = new EmployeePay { Amount = PayAmount, Type = PayType, HoursWorked = HoursWorked },
+                                   Residence = Residence
+                                  }
+
+                    );
             }
+
+            return employeeList;
         }
     }
 }
