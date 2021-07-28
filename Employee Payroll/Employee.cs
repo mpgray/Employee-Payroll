@@ -9,7 +9,11 @@ namespace Employee_Payroll
     {
         private readonly IEmployee EmployeeData;
         public IPayPeriodSummary payPeriodSummary;
-        public Employee(IEmployee employee) => EmployeeData = employee;
+        public Employee(IEmployee employee)
+        {
+            EmployeeData = employee;
+            GetTaxes();
+        }
 
         public string Id { get => EmployeeData.Id; set => EmployeeData.Id = value; }
         public EmployeeName Name { get => EmployeeData.Name; set => EmployeeData.Name = value; }
@@ -18,6 +22,16 @@ namespace Employee_Payroll
         public State Residence { get => EmployeeData.Residence; set => EmployeeData.Residence = value; }
         public EmployeeTaxes Taxes { get => payPeriodSummary.Taxes; set => payPeriodSummary.Taxes = value; }
 
+        private void GetTaxes()
+        {
+            var pay = new Pay(Pay);
+            Taxes.GrosPay = pay.GetGrossPay();
 
+            var taxes = new Taxes(EmployeeData);
+            Taxes.StateTax = taxes.GetStateTax(Taxes.GrosPay);
+            Taxes.FederalTax = taxes.GetFederalTax(Taxes.GrosPay);
+
+            Taxes.NetPay = Taxes.GrosPay - Taxes.StateTax - Taxes.FederalTax;
+        }
     }
 }

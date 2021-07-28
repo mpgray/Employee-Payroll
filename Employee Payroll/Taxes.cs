@@ -14,6 +14,9 @@ namespace Employee_Payroll
         //Constructor
         public Taxes(IEmployee employee) => Employee = employee;
 
+        public double GetFederalTax(double grossPay) => grossPay * .15;
+        public double GetStateTax(double grossPay) => grossPay * StateTaxRate();
+
 
         private double StateTaxRate()
         {

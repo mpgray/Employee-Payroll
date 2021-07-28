@@ -9,7 +9,7 @@ namespace Employee_Payroll.Models
         private readonly EmployeePay Paycheck;
         public Pay(EmployeePay paycheck) => Paycheck = paycheck;
 
-        public double GetPay()
+        public double GetGrossPay()
         {
             if (Paycheck.Type == PayType.Hourly)
                 return HourlyGrossPay();
