@@ -6,5 +6,8 @@ namespace Employee_Payroll.Models
 {
     class EmployeeName
     {
+        public string FirstName { get; set;}
+        public string LastName { get; set; }
+
     }
 }

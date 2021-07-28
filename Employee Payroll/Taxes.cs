@@ -14,7 +14,8 @@ namespace Employee_Payroll
         //Constructor
         public Taxes(IEmployee employee) => Employee = employee;
 
-        public double GetStateTaxRate()
+
+        private double StateTaxRate()
         {
             switch (Employee.Residence)
             {
@@ -30,8 +31,11 @@ namespace Employee_Payroll
                 case State.NM:
                 case State.TX:
                     return .07;
-            } 
-            
+                default:
+                    return 0;
+            }
         }
+
+        
     }
 }

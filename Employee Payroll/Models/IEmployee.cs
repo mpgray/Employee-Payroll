@@ -24,6 +24,5 @@ namespace Employee_Payroll.Models
         public EmployeePay Pay { get; set; }
         public DateTime StartDate { get; set; }
         public State Residence { get; set; }
-        public int HoursWorked { get; set; }
      }
 }
