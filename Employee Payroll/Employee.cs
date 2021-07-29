@@ -5,8 +5,13 @@ using System.Text;
 
 namespace Employee_Payroll
 {
+    enum State
+    {
+        UT,WY,NV,CO,ID,AZ,OR,WA,NM,TX
+    }
     class Employee
     {
+        
         public Employee(EmployeePay pay)
         {
             Pay = pay;
@@ -16,7 +21,6 @@ namespace Employee_Payroll
         public string Id { get; set; }
         public EmployeeName Name { get; set; }
         public EmployeePay Pay { get; set; }
-        public DateTime StartDate { get; set; }
         public State Residence { get; set; }
         public EmployeeTaxes Taxes { get; set; }
 
@@ -24,14 +28,15 @@ namespace Employee_Payroll
         {
             var employeeTaxes = new EmployeeTaxes();
             var pay = new Pay(Pay);
-            employeeTaxes.GrosPay = pay.GetGrossPay();
+            employeeTaxes.GrossPay = pay.GetGrossPay();
 
             var taxes = new Taxes(Residence);
 
-            employeeTaxes.StateTax = taxes.GetStateTax(employeeTaxes.GrosPay);
-            employeeTaxes.FederalTax = taxes.GetFederalTax(employeeTaxes.GrosPay);
+            employeeTaxes.StateTax = taxes.GetStateTax(employeeTaxes.GrossPay);
+            employeeTaxes.FederalTax = taxes.GetFederalTax(employeeTaxes.GrossPay);
 
-            employeeTaxes.NetPay = employeeTaxes.GrosPay - employeeTaxes.StateTax - employeeTaxes.FederalTax;
+            employeeTaxes.GrossPay = Math.Round(employeeTaxes.GrossPay, 2);
+            employeeTaxes.NetPay = Math.Round(employeeTaxes.GrossPay - employeeTaxes.StateTax - employeeTaxes.FederalTax, 2);
 
             return employeeTaxes;
         }

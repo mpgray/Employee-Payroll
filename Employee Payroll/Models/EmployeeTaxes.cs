@@ -6,7 +6,7 @@ namespace Employee_Payroll.Models
 {
     class EmployeeTaxes
     {
-        public double GrosPay { get; set; }
+        public double GrossPay { get; set; }
         public double FederalTax { get; set; }
         public double StateTax { get; set; }
         public double NetPay { get; set; }
