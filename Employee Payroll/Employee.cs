@@ -7,9 +7,10 @@ namespace Employee_Payroll
 {
     class Employee
     {
-        public Employee()
+        public Employee(EmployeePay pay)
         {
-            GetTaxes();
+            Pay = pay;
+            Taxes = GetTaxes();
         }
 
         public string Id { get; set; }
@@ -19,16 +20,20 @@ namespace Employee_Payroll
         public State Residence { get; set; }
         public EmployeeTaxes Taxes { get; set; }
 
-        private void GetTaxes()
+        private EmployeeTaxes GetTaxes()
         {
+            var employeeTaxes = new EmployeeTaxes();
             var pay = new Pay(Pay);
-            Taxes.GrosPay = pay.GetGrossPay();
+            employeeTaxes.GrosPay = pay.GetGrossPay();
 
             var taxes = new Taxes(Residence);
-            Taxes.StateTax = taxes.GetStateTax(Taxes.GrosPay);
-            Taxes.FederalTax = taxes.GetFederalTax(Taxes.GrosPay);
 
-            Taxes.NetPay = Taxes.GrosPay - Taxes.StateTax - Taxes.FederalTax;
+            employeeTaxes.StateTax = taxes.GetStateTax(employeeTaxes.GrosPay);
+            employeeTaxes.FederalTax = taxes.GetFederalTax(employeeTaxes.GrosPay);
+
+            employeeTaxes.NetPay = employeeTaxes.GrosPay - employeeTaxes.StateTax - employeeTaxes.FederalTax;
+
+            return employeeTaxes;
         }
     }
 }

@@ -2,11 +2,13 @@
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Employee_Payroll
 {
-    class ReadEmployeeFile
+    class EmployeeFile
     {
 
         public string Id { get; set; }
@@ -19,7 +21,7 @@ namespace Employee_Payroll
         public int HoursWorked { get; set; }
 
 
-        public List<Employee> EmployeeFile()
+        public List<Employee> ReadEmployeeFile()
         {
             var employeeList = new List<Employee>();
 
@@ -85,10 +87,11 @@ namespace Employee_Payroll
                         break;
                 }
                 HoursWorked = Convert.ToInt32(employee[7]);
+
+                var employeePay = new EmployeePay { Amount = PayAmount, Type = PayType, HoursWorked = HoursWorked };
                 employeeList.Add(
-                    new Employee { Id = Id, 
+                    new Employee(employeePay) { Id = Id, 
                                    Name = new EmployeeName { FirstName = FirstName, LastName = LastName},
-                                   Pay = new EmployeePay { Amount = PayAmount, Type = PayType, HoursWorked = HoursWorked },
                                    Residence = Residence
                                   }
 
@@ -96,6 +99,16 @@ namespace Employee_Payroll
             }
 
             return employeeList;
+        }
+
+
+        public void WriteEmployeePayPeriodSummary(List<PayPeriodSummary> payPeriodSummaryList)
+        {
+            using StreamWriter writer = new StreamWriter("c:\\proj\\text.txt");
+            foreach (var payPeriodSummary in payPeriodSummaryList)
+            {
+                writer.WriteLine(payPeriodSummary.Id + "," + payPeriodSummary.Name.FirstName + "," + payPeriodSummary.Name.LastName + "," + payPeriodSummary.Taxes.GrosPay + "," + payPeriodSummary.Taxes.FederalTax + "," + payPeriodSummary.Taxes.StateTax + "," + payPeriodSummary.Taxes.NetPay);
+            }
         }
     }
 }
