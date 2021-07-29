@@ -22,46 +22,41 @@ namespace Employee_Payroll
 
 
         public List<Employee> ReadEmployeeFile(string path)
-        { try
+        { 
+            var employeeList = new List<Employee>();
+           
+                using var parser = new TextFieldParser(path);
+           
+            
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(",");
+            while (!parser.EndOfData)
             {
-                var employeeList = new List<Employee>();
-               
-                    using var parser = new TextFieldParser(path);
-               
-                
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(",");
-                while (!parser.EndOfData)
-                {
-                    string[] employee = parser.ReadFields();
-                    if (employee == null || employee.Length < 8)
-                        break;
+                string[] employee = parser.ReadFields();
+                if (employee == null || employee.Length < 8)
+                    break;
 
-                    Id = employee[0];
-                    FirstName = employee[1];
-                    LastName = employee[2];
-                    PayType = GetPayType(employee[3]);
-                    PayAmount = Convert.ToDouble(employee[4]);
-                    StartDate = Convert.ToDateTime(employee[5]);
-                    Residence = GetResidence(employee[6]);      
-                    HoursWorked = Convert.ToInt32(employee[7]);
+                Id = employee[0];
+                FirstName = employee[1];
+                LastName = employee[2];
+                PayType = GetPayType(employee[3]);
+                PayAmount = Convert.ToDouble(employee[4]);
+                StartDate = Convert.ToDateTime(employee[5]);
+                Residence = GetResidence(employee[6]);      
+                HoursWorked = Convert.ToInt32(employee[7]);
 
-                    var employeePay = new EmployeePay { Amount = PayAmount, Type = PayType, HoursWorked = HoursWorked };
-                    employeeList.Add(
-                        new Employee(employeePay) { Id = Id, 
-                                       Name = new EmployeeName { FirstName = FirstName, LastName = LastName},
-                                       Residence = Residence
-                                      }
+                var employeePay = new EmployeePay { Amount = PayAmount, Type = PayType, HoursWorked = HoursWorked };
+                employeeList.Add(
+                    new Employee(employeePay) { Id = Id, 
+                                   Name = new EmployeeName { FirstName = FirstName, LastName = LastName},
+                                   Residence = Residence
+                                  }
 
-                        );
-                }
-                return employeeList;
+                    );
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return employeeList;
+       
+          
         }
 
         public void WriteEmployeePayPeriodSummary(List<PayPeriodSummary> payPeriodSummaryList, string path)

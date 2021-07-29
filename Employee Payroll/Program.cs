@@ -22,10 +22,21 @@ namespace Employee_Payroll
 
             var employeeFile = new EmployeeFile();
             Console.Out.WriteLine("Reading and parsing file, please wait...");
-            var employeeList = employeeFile.ReadEmployeeFile(inputPath);
-            var payPeriodSummaryList = employeeList.Select(employee => new PayPeriodSummary {Id = employee.Id, Name = employee.Name, Taxes = employee.Taxes}).ToList();
-            Console.Out.WriteLine("Now Writing to file, please wait...");
-            employeeFile.WriteEmployeePayPeriodSummary(payPeriodSummaryList.OrderByDescending(a => a.Taxes.GrossPay).ToList(), outputPath);
+
+            try
+            {
+                var employeeList = employeeFile.ReadEmployeeFile(inputPath);
+                var payPeriodSummaryList = employeeList.Select(employee => new PayPeriodSummary { Id = employee.Id, Name = employee.Name, Taxes = employee.Taxes }).ToList();
+                Console.Out.WriteLine("Now Writing to file, please wait...");
+                employeeFile.WriteEmployeePayPeriodSummary(payPeriodSummaryList.OrderByDescending(a => a.Taxes.GrossPay).ToList(), outputPath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+            
             Console.Out.WriteLine("Done.");
             Console.In.ReadLine();
         }
